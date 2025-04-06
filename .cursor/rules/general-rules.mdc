@@ -1,0 +1,20 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+- we use Bun for this project as a package manager
+- we use Nestjs as the backend framework of choice
+- Express is the preferred framework underneath nest
+- we use Models, routes, controllers, services, and api layers.
+- Error handling is setup with winston
+- MongoDB is the database of choice
+- Mongoose is the ORM of choice
+- Auth has its own module which its own set of functions and services
+- All routes except Sign In are public routes, all else require Authentication
+- Routes related to courses like viewing courses and subscribing the user to a course, require the user to be subscribed, and the request is validated via Authorization middleware making sure they are subscribed
+- Auth is accomplished via @nestjs/jwt and custom AuthGuards
+- Use Zod for schemas and validations

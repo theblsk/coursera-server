@@ -1,0 +1,54 @@
+# Environment Variables
+# Never commit sensitive data!
+.env
+.env.*
+!.env.example
+
+# Dependencies
+/node_modules
+
+# Bun lockfile
+# Ensure this is committed if you want deterministic installs across environments
+# bun.lockb  <-- Commented out by default, uncomment if you DON'T want to track it
+
+# TypeScript compilation output
+/dist
+*.tsbuildinfo
+*.js
+*.js.map
+# Exclude source files from the root (if accidentally compiled there)
+/*.js
+/*.js.map
+# Exclude node_modules from the root (just in case)
+/node_modules/
+
+# NestJS cache
+.nest/
+
+# Logs
+/logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts (alternative directories)
+/build
+
+# Test reports and coverage
+/coverage
+*.lcov
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE configuration files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Miscellaneous
+.npm
