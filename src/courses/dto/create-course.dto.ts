@@ -2,10 +2,8 @@ import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
 const CreateCourseSchema = z.object({
-  title: z.string().min(1),
-  description: z.string().optional(), // Assuming description is optional
-  instructor: z.string().optional(), // Assuming instructor is optional
-  duration: z.number().int().positive().optional(), // Assuming duration is optional positive integer
+  name: z.string().min(1),
+  description: z.string().min(1),
 });
 
 export class CreateCourseDto extends createZodDto(CreateCourseSchema) {}

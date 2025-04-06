@@ -3,22 +3,13 @@ import { HydratedDocument } from 'mongoose';
 
 export type CourseDocument = HydratedDocument<Course>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Course {
   @Prop({ required: true })
-  title: string;
+  name: string;
 
-  @Prop()
+  @Prop({ required: true })
   description: string;
-
-  @Prop()
-  instructor: string;
-
-  @Prop()
-  duration: number;
-
-  @Prop({ default: Date.now })
-  createdAt: Date;
 }
 
 export const CourseSchema = SchemaFactory.createForClass(Course);

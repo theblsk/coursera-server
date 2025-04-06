@@ -8,15 +8,11 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from './decorators/public.decorator'; // We'll create this next
+import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
-// Define the expected payload structure
-interface JwtPayload {
+export interface JwtPayload {
   sub: string; // Subject (usually user ID)
   email: string;
-  // Add other fields you might include in the token payload
-  iat?: number; // Issued at
-  exp?: number; // Expiration time
 }
 
 @Injectable()
@@ -45,7 +41,6 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync<JwtPayload>(token, {
         secret: this.configService.get<string>('JWT_SECRET'),
       });
-      // Assign the typed payload to the now typed request.user
       request.user = payload;
     } catch {
       throw new UnauthorizedException();

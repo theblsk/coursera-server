@@ -3,18 +3,99 @@ description:
 globs: 
 alwaysApply: true
 ---
+# 📘 Cursor Backend Rules
 
-# Your rule content
+## ✅ Tech & Project Architecture
 
-- we use Bun for this project as a package manager
-- we use Nestjs as the backend framework of choice
-- Express is the preferred framework underneath nest
-- we use Models, routes, controllers, services, and api layers.
-- Error handling is setup with winston
-- MongoDB is the database of choice
-- Mongoose is the ORM of choice
-- Auth has its own module which its own set of functions and services
-- All routes except Sign In are public routes, all else require Authentication
-- Routes related to courses like viewing courses and subscribing the user to a course, require the user to be subscribed, and the request is validated via Authorization middleware making sure they are subscribed
-- Auth is accomplished via @nestjs/jwt and custom AuthGuards
-- Use Zod for schemas and validations
+- **Package Manager**: [Bun](mdc:https:/bun.sh)
+- **Framework**: [NestJS](mdc:https:/nestjs.com) with **Express**
+- **Database**: MongoDB
+- **ORM**: Mongoose
+- **Validation**: [Zod](mdc:https:/zod.dev) (used both on backend and frontend)
+- **Authentication**:
+  - Using `@nestjs/jwt` with custom **AuthGuards**
+  - All routes require authentication except `Sign Up` and `Sign In`
+- **Authorization**:
+  - `/courses` routes require the user to be `subscribed === true`
+  - Authorization layer confirms subscription before access
+- **Password Policy (Zod)**:
+  - Min 8 characters
+  - Must include at least one letter, one number, and one special char (`@` and `#` required)
+- **Logging**:
+  - [Winston](mdc:https:/github.com/winstonjs/winston) for error and general logging
+  - Integrated with global exception filter
+- **Testing**:
+  - Unit tests using [Vitest](mdc:https:/vitest.dev) and **Bun**
+  - Try to include e2e tests if time permits
+- **API Documentation**:
+  - Swagger auto-generation with NestJS decorators
+  - User and Course schemas included
+- **Code Structure**:
+  - Full separation of concerns:
+    - `routes/`
+    - `controllers/`
+    - `services/`
+    - `api/dao/`
+  - `auth/` is a dedicated module with its own services and functions
+
+---
+
+## 🧩 Models
+
+### 👤 `User`
+
+| Field        | Type         | Description                          |
+|--------------|--------------|--------------------------------------|
+| `id`         | ObjectId     | Primary key                          |
+| `first_name` | string       | Minimum 3 characters                 |
+| `last_name`  | string       | Optional                             |
+| `age`        | number       | Optional                             |
+| `email`      | string       | Unique                               |
+| `password`   | string       | Hashed, must follow Zod policy       |
+| `courses`    | ObjectId[]   | Course IDs                           |
+| `subscribed` | boolean      | Must be `true` to access courses     |
+
+### 📚 `Course`
+
+| Field         | Type       | Description       |
+|---------------|------------|-------------------|
+| `id`          | ObjectId   | Primary key       |
+| `name`        | string     | Course name       |
+| `description` | string     | Course details    |
+
+---
+
+## 🔓 Public Routes
+
+### `POST /user/signup`
+- Public
+- Zod validation for:
+  - `first_name`: min 3 characters
+  - `password`: min 8 characters, contains `@`, `#`, letter, number, special char
+
+### `POST /user/signin`
+- Public
+- Issues JWT
+
+---
+
+## 🔐 Authenticated Routes
+
+### `POST /user/subscribe`
+- Requires login
+- Sets `user.subscribed = true` (no real payment check)
+
+---
+
+## 📚 Course Routes (Require Auth + Subscription)
+
+### `GET /courses`
+- List all courses (only if subscribed)
+
+### `GET /courses/user`
+- List courses enrolled by user (`user.courses[]`)
+
+### `POST /courses/add`
+- Add a course to user's list (if subscribed)
+
+---

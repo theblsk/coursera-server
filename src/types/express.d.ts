@@ -1,4 +1,4 @@
-import { JwtPayload } from '../auth/auth.guard'; // Adjust path if needed
+import { JwtPayload } from '../auth/guards/auth.guard'; // Adjust path if needed
 
 declare global {
   namespace Express {
