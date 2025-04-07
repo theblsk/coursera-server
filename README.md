@@ -19,15 +19,86 @@ bun install
 
 The application is configured to connect to MongoDB at `mongodb://localhost:27017/coursera`. If you need to change this connection string, edit the `src/database/database.module.ts` file.
 
-## Running the application
+## Running the Application
 
 ```bash
-# Development mode
+# Development mode with auto-reload
 bun run start:dev
+
+# Run in debug mode
+bun run start:debug
+
+# Standard development mode
+bun run start
 
 # Production mode
 bun run start:prod
 ```
+
+The application will run on port 3000 by default. You can change this by setting the `PORT` environment variable.
+
+Once running, you can access:
+- API at: http://localhost:3000
+- API Documentation (Swagger): http://localhost:3000/api-docs
+
+## Running with Docker
+
+### Prerequisites
+- Docker and Docker Compose installed on your system
+
+### Development Setup
+```bash
+# Build and start the application with Docker Compose
+docker-compose up -d
+
+# View logs
+docker-compose logs -f api
+```
+
+### Environment Variables
+The application requires the following environment variables:
+- `MONGO_URI`: MongoDB connection string
+- `JWT_SECRET`: Secret key for JWT token generation
+- `PORT`: (Optional) Port to run the application on (default: 3000)
+
+For local development, create a `.env` file in the project root with these variables. For production deployment, set these variables in your deployment environment.
+
+### Production Deployment
+When deploying to production:
+1. Ensure environment variables are set in your hosting environment
+2. Do not include the `.env` file in your deployment
+3. Build the Docker image: `docker build -t coursera-server .`
+4. Run the container with proper environment variables:
+   ```bash
+   docker run -d -p 3000:3000 \
+     -e MONGO_URI=your_mongo_uri \
+     -e JWT_SECRET=your_jwt_secret \
+     coursera-server
+   ```
+
+## Deployment with Docker Compose
+
+For development or staging environments, you can use Docker Compose which includes a MongoDB instance:
+
+```bash
+# Start the services
+docker-compose up -d
+
+# Stop the services
+docker-compose down
+
+# View logs
+docker-compose logs -f
+```
+
+## Troubleshooting Docker Deployment
+
+If you encounter issues with MongoDB connection:
+
+1. Verify your MongoDB URI is correctly formatted (should start with `mongodb://` or `mongodb+srv://`)
+2. If using a local MongoDB with Docker, use `host.docker.internal` instead of `localhost` to access the host machine
+3. Ensure your MongoDB instance is accessible from the container network
+4. Check logs for connection errors using: `docker logs <container_id>`
 
 ## API Endpoints
 
@@ -51,6 +122,8 @@ bun run start:prod
 - `src/courses` - Course module with controller, service, and schema
 - `src/database` - Database module for MongoDB connection
 - `src/logger` - Winston logger configuration
+- `src/users` - User management module
+- `src/auth` - Authentication and authorization module
 
 ## Error Handling
 
@@ -107,14 +180,17 @@ $ bun run start:prod
 ## Run tests
 
 ```bash
-# unit tests
-$ bun run test
+# Unit tests
+bun run test
 
-# e2e tests
-$ bun run test:e2e
+# Watch mode for tests
+bun run test:watch
 
-# test coverage
-$ bun run test:cov
+# E2E tests
+bun run test:e2e
+
+# Test coverage
+bun run test:cov
 ```
 
 ## Deployment
