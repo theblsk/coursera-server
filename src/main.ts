@@ -14,6 +14,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ZodValidationPipe());
 
+  app.enableCors(); // Enable CORS for all origins
+
   // Swagger Setup
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Coursera Server API')
