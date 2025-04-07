@@ -48,10 +48,10 @@ export class AuthService {
   // Removed async as jwtService.sign is synchronous
   login(user: ValidatedUserPayload) {
     this.logger.info(`Generating JWT token for user: ${user.email}`);
-    const payload = { email: user.email, sub: user._id.toHexString() }; // Convert ObjectId to string for JWT payload
+    const payload = { email: user.email, sub: user._id.toHexString() };
     return {
       access_token: this.jwtService.sign(payload),
-      user, // user is now typed
+      user,
     };
   }
 

@@ -15,21 +15,18 @@ const mockCourse = {
   _id: mockCourseId,
   name: 'Test Course',
   description: 'Test Description',
-  // Add other necessary fields matching the Course schema if needed
 };
 const mockUser = {
   _id: mockUserId,
   email: 'test@example.com',
   subscribed: true,
   courses: [mockCourseId],
-  // Add other necessary fields matching the User schema if needed
 };
 
 const mockRequest = {
   user: {
     sub: mockUserId,
     email: 'test@example.com',
-    // Add other fields if needed by tests
   } as JwtPayload,
 } as Express.Request;
 
@@ -45,10 +42,8 @@ const mockUsersService = {
   addCourseToUser: jest.fn().mockResolvedValue(mockUser),
 };
 
-// Mock Guard (allow access by default)
 const mockSubscriptionGuard = { canActivate: jest.fn(() => true) };
 
-// Define a type for the user object without password
 type UserWithoutPassword = Omit<typeof mockUser, 'password'>;
 
 describe('CoursesController', () => {

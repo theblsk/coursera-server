@@ -11,7 +11,7 @@ import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 export interface JwtPayload {
-  sub: string; // Subject (usually user ID)
+  sub: string;
   email: string;
 }
 

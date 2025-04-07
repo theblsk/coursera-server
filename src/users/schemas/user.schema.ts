@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
-// Interface for custom methods
 interface UserMethods {
   comparePassword(candidatePassword: string): Promise<boolean>;
 }

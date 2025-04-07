@@ -14,7 +14,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ZodValidationPipe());
 
-  app.enableCors(); // Enable CORS for all origins
+  app.enableCors(); // Enable CORS for all origins, for demo purposes
 
   // Swagger Setup
   const swaggerConfig = new DocumentBuilder()
